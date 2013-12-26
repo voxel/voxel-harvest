@@ -12,6 +12,7 @@ class Harvest extends EventEmitter
     @mine = opts.mine ? throw 'voxel-harvest requires "mine" option set to voxel-mine instance'
     @registry = opts.registry ? throw 'voxel-harvest requires "registry" option set to voxel-registry instance'
     @playerInventory = opts.playerInventory ? throw 'voxel-harvest requires "playerInventory" option set to inventory instance'
+    @block2ItemPile = opts.block2ItemPile ? (blockName) -> new ItemPile(blockName, 1)
     @enable()
   
   enable: () ->
@@ -24,7 +25,8 @@ class Harvest extends EventEmitter
       # TODO: send 'harvest' event, allow canceling
 
       blockName = @registry.getBlockName(target.value)
-      droppedPile = new ItemPile(blockName, 1) # TODO: custom drops
+      droppedPile = @block2ItemPile(blockName)
+      return if not droppedPile?
 
       # adds to inventory and refreshes toolbar
       excess = @playerInventory.give droppedPile

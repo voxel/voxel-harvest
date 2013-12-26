@@ -16,7 +16,7 @@
     __extends(Harvest, _super);
 
     function Harvest(game, opts) {
-      var _ref, _ref1, _ref2;
+      var _ref, _ref1, _ref2, _ref3;
       this.game = game;
       this.mine = (function() {
         if ((_ref = opts.mine) != null) {
@@ -39,6 +39,9 @@
           throw 'voxel-harvest requires "playerInventory" option set to inventory instance';
         }
       })();
+      this.block2ItemPile = (_ref3 = opts.block2ItemPile) != null ? _ref3 : function(blockName) {
+        return new ItemPile(blockName, 1);
+      };
       this.enable();
     }
 
@@ -48,7 +51,10 @@
         var blockName, droppedPile, excess;
         game.setBlock(target.voxel, 0);
         blockName = _this.registry.getBlockName(target.value);
-        droppedPile = new ItemPile(blockName, 1);
+        droppedPile = _this.block2ItemPile(blockName);
+        if (droppedPile == null) {
+          return;
+        }
         excess = _this.playerInventory.give(droppedPile);
         if (excess > 0) {
           return _this.game.setBlock(target.voxel, target.value);
