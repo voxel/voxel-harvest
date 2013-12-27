@@ -12,6 +12,10 @@
     return new Harvest(game, opts);
   };
 
+  module.exports.pluginInfo = {
+    loadAfter: ['mine', 'registry']
+  };
+
   Harvest = (function(_super) {
     __extends(Harvest, _super);
 
@@ -19,17 +23,19 @@
       var _ref, _ref1, _ref2, _ref3;
       this.game = game;
       this.mine = (function() {
-        if ((_ref = opts.mine) != null) {
+        var _ref1;
+        if ((_ref = (_ref1 = game.plugins) != null ? _ref1.all.mine : void 0) != null) {
           return _ref;
         } else {
-          throw 'voxel-harvest requires "mine" option set to voxel-mine instance';
+          throw 'voxel-harvest requires "voxel-mine" plugin';
         }
       })();
       this.registry = (function() {
-        if ((_ref1 = opts.registry) != null) {
+        var _ref2;
+        if ((_ref1 = (_ref2 = game.plugins) != null ? _ref2.all.registry : void 0) != null) {
           return _ref1;
         } else {
-          throw 'voxel-harvest requires "registry" option set to voxel-registry instance';
+          throw 'voxel-harvest requires "voxel-mine" plugin';
         }
       })();
       this.playerInventory = (function() {
