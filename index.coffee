@@ -7,13 +7,13 @@ module.exports = (game, opts) ->
   return new Harvest(game, opts)
 
 module.exports.pluginInfo =
-  loadAfter: ['mine', 'registry']
+  loadAfter: ['voxel-mine', 'voxel-registry']
 
 class Harvest extends EventEmitter
   constructor: (@game, opts) ->
 
-    @mine = game.plugins?.all.mine ? throw 'voxel-harvest requires "voxel-mine" plugin'
-    @registry = game.plugins?.all.registry ? throw 'voxel-harvest requires "voxel-mine" plugin'
+    @mine = game.plugins?.get('voxel-mine') ? throw 'voxel-harvest requires "voxel-mine" plugin'
+    @registry = game.plugins?.get('voxel-registry') ? throw 'voxel-harvest requires "voxel-mine" plugin'
     @playerInventory = opts.playerInventory ? throw 'voxel-harvest requires "playerInventory" option set to inventory instance' # TODO: plugin!
     @block2ItemPile = opts.block2ItemPile ? (blockName) -> new ItemPile(blockName, 1)
     @enable()
