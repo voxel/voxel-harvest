@@ -20,7 +20,7 @@
     __extends(Harvest, _super);
 
     function Harvest(game, opts) {
-      var _ref, _ref1, _ref2, _ref3;
+      var _ref, _ref1, _ref2;
       this.game = game;
       this.mine = (function() {
         var _ref1;
@@ -46,9 +46,6 @@
           throw 'voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance';
         }
       })();
-      this.block2ItemPile = (_ref3 = opts.block2ItemPile) != null ? _ref3 : function(blockName) {
-        return new ItemPile(blockName, 1);
-      };
       this.enable();
     }
 
@@ -71,6 +68,19 @@
 
     Harvest.prototype.disable = function() {
       return this.mine.removeListener('break', this.onBreak);
+    };
+
+    Harvest.prototype.block2ItemPile = function(blockName) {
+      var item, itemPile, _ref;
+      item = (_ref = this.registry.getItemProps(blockName)) != null ? _ref.itemDrop : void 0;
+      if (item === null) {
+        return void 0;
+      }
+      if (item === void 0) {
+        item = blockName;
+      }
+      itemPile = new ItemPile(item, 1);
+      return itemPile;
     };
 
     return Harvest;

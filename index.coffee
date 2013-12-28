@@ -15,7 +15,6 @@ class Harvest extends EventEmitter
     @mine = game.plugins?.get('voxel-mine') ? throw 'voxel-harvest requires "voxel-mine" plugin'
     @registry = game.plugins?.get('voxel-registry') ? throw 'voxel-harvest requires "voxel-mine" plugin'
     @playerInventory = game.plugins?.get('voxel-carry')?.inventory ? opts.playerInventory ? throw 'voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance'
-    @block2ItemPile = opts.block2ItemPile ? (blockName) -> new ItemPile(blockName, 1)
     @enable()
   
   enable: () ->
@@ -43,3 +42,18 @@ class Harvest extends EventEmitter
   disable: () ->
     @mine.removeListener 'break', @onBreak
 
+  block2ItemPile: (blockName) ->
+    item = @registry.getItemProps(blockName)?.itemDrop
+    if item == null  
+      # special case, null = no drops
+      return undefined
+    if item == undefined
+      # unspecified, block drops itself
+      item = blockName
+
+    # TODO: option to drop >1 count of item
+    # TODO: option to drop probabilistically, count range min-max, with given chances
+
+    itemPile = new ItemPile(item, 1)
+
+    return itemPile
