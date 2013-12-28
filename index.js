@@ -13,7 +13,7 @@
   };
 
   module.exports.pluginInfo = {
-    loadAfter: ['voxel-mine', 'voxel-registry']
+    loadAfter: ['voxel-mine', 'voxel-registry', 'voxel-carry']
   };
 
   Harvest = (function(_super) {
@@ -39,10 +39,11 @@
         }
       })();
       this.playerInventory = (function() {
-        if ((_ref2 = opts.playerInventory) != null) {
+        var _ref3, _ref4, _ref5;
+        if ((_ref2 = (_ref3 = (_ref4 = game.plugins) != null ? (_ref5 = _ref4.get('voxel-carry')) != null ? _ref5.inventory : void 0 : void 0) != null ? _ref3 : opts.playerInventory) != null) {
           return _ref2;
         } else {
-          throw 'voxel-harvest requires "playerInventory" option set to inventory instance';
+          throw 'voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance';
         }
       })();
       this.block2ItemPile = (_ref3 = opts.block2ItemPile) != null ? _ref3 : function(blockName) {
