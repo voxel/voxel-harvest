@@ -7,7 +7,7 @@ module.exports = (game, opts) ->
   return new Harvest(game, opts)
 
 module.exports.pluginInfo =
-  loadAfter: ['voxel-mine', 'voxel-registry', 'voxel-carry']
+  loadAfter: ['voxel-mine', 'voxel-registry', 'voxel-carry', 'voxel-inventory-hotbar']
 
 class Harvest extends EventEmitter
   constructor: (@game, opts) ->
@@ -15,14 +15,34 @@ class Harvest extends EventEmitter
     @mine = game.plugins?.get('voxel-mine') ? throw 'voxel-harvest requires "voxel-mine" plugin'
     @registry = game.plugins?.get('voxel-registry') ? throw 'voxel-harvest requires "voxel-mine" plugin'
     @playerInventory = game.plugins?.get('voxel-carry')?.inventory ? opts.playerInventory ? throw 'voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance'
+    @hotbar = game.plugins?.get('voxel-inventory-hotbar')
     @enable()
   
   enable: () ->
+    #@playerInventory.give new ItemPile('pickaxeWood', 1, {damage:5})
+    #@playerInventory.give new ItemPile('pickaxeStone', 1, {damage:0})
+
     @mine.on 'break', @onBreak = (target) =>
       #if plugins.isEnabled('debris') # TODO: refactor into module itself (event listener)
       #  debris(target.voxel, target.value)
       #else
       game.setBlock target.voxel, 0
+
+      if @hotbar?
+        tool = @hotbar.held()
+        if tool?
+          props = @registry.getItemProps(tool.item)
+          maxDamage = props.maxDamage
+          if maxDamage?  # an item with finite durability, so damage it
+            tool.tags.damage ?= 0 
+            tool.tags.damage += 1
+            if tool.tags.damage >= maxDamage
+              # break tool # TODO: fanfare
+              tool = undefined
+
+            @hotbar.inventory.set @hotbar.inventoryWindow.selectedIndex, tool
+            @hotbar.refresh()
+            console.log 'tool=',tool
 
       # TODO: send 'harvest' event, allow canceling
 

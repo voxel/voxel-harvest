@@ -13,14 +13,14 @@
   };
 
   module.exports.pluginInfo = {
-    loadAfter: ['voxel-mine', 'voxel-registry', 'voxel-carry']
+    loadAfter: ['voxel-mine', 'voxel-registry', 'voxel-carry', 'voxel-inventory-hotbar']
   };
 
   Harvest = (function(_super) {
     __extends(Harvest, _super);
 
     function Harvest(game, opts) {
-      var _ref, _ref1, _ref2;
+      var _ref, _ref1, _ref2, _ref3;
       this.game = game;
       this.mine = (function() {
         var _ref1;
@@ -46,14 +46,34 @@
           throw 'voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance';
         }
       })();
+      this.hotbar = (_ref3 = game.plugins) != null ? _ref3.get('voxel-inventory-hotbar') : void 0;
       this.enable();
     }
 
     Harvest.prototype.enable = function() {
       var _this = this;
       return this.mine.on('break', this.onBreak = function(target) {
-        var blockName, droppedPile, excess;
+        var blockName, droppedPile, excess, maxDamage, props, tool, _base;
         game.setBlock(target.voxel, 0);
+        if (_this.hotbar != null) {
+          tool = _this.hotbar.held();
+          if (tool != null) {
+            props = _this.registry.getItemProps(tool.item);
+            maxDamage = props.maxDamage;
+            if (maxDamage != null) {
+              if ((_base = tool.tags).damage == null) {
+                _base.damage = 0;
+              }
+              tool.tags.damage += 1;
+              if (tool.tags.damage >= maxDamage) {
+                tool = void 0;
+              }
+              _this.hotbar.inventory.set(_this.hotbar.inventoryWindow.selectedIndex, tool);
+              _this.hotbar.refresh();
+              console.log('tool=', tool);
+            }
+          }
+        }
         blockName = _this.registry.getBlockName(target.value);
         droppedPile = _this.block2ItemPile(blockName);
         if (droppedPile == null) {
