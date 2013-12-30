@@ -52,28 +52,13 @@
 
     Harvest.prototype.enable = function() {
       var _this = this;
+      this.playerInventory.give(new ItemPile('pickaxeWood', 1, {
+        damage: 5
+      }));
       return this.mine.on('break', this.onBreak = function(target) {
-        var blockName, droppedPile, excess, maxDamage, props, tool, _base;
+        var blockName, droppedPile, excess;
         game.setBlock(target.voxel, 0);
-        if (_this.hotbar != null) {
-          tool = _this.hotbar.held();
-          if (tool != null) {
-            props = _this.registry.getItemProps(tool.item);
-            maxDamage = props.maxDamage;
-            if (maxDamage != null) {
-              if ((_base = tool.tags).damage == null) {
-                _base.damage = 0;
-              }
-              tool.tags.damage += 1;
-              if (tool.tags.damage >= maxDamage) {
-                tool = void 0;
-              }
-              _this.hotbar.inventory.set(_this.hotbar.inventoryWindow.selectedIndex, tool);
-              _this.hotbar.refresh();
-              console.log('tool=', tool);
-            }
-          }
-        }
+        _this.damageToolHeld(1);
         blockName = _this.registry.getBlockName(target.value);
         droppedPile = _this.block2ItemPile(blockName);
         if (droppedPile == null) {
@@ -88,6 +73,35 @@
 
     Harvest.prototype.disable = function() {
       return this.mine.removeListener('break', this.onBreak);
+    };
+
+    Harvest.prototype.damageToolHeld = function(n) {
+      var maxDamage, props, tool, _base;
+      if (n == null) {
+        n = 1;
+      }
+      if (this.hotbar == null) {
+        return;
+      }
+      tool = this.hotbar.held();
+      if (tool == null) {
+        return;
+      }
+      props = this.registry.getItemProps(tool.item);
+      maxDamage = props.maxDamage;
+      if (maxDamage == null) {
+        return;
+      }
+      if ((_base = tool.tags).damage == null) {
+        _base.damage = 0;
+      }
+      tool.tags.damage += 1;
+      if (tool.tags.damage >= maxDamage) {
+        tool = void 0;
+      }
+      this.hotbar.inventory.set(this.hotbar.inventoryWindow.selectedIndex, tool);
+      this.hotbar.refresh();
+      return console.log('tool = ', tool);
     };
 
     Harvest.prototype.block2ItemPile = function(blockName) {
