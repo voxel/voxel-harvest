@@ -7,9 +7,17 @@
     "url": "git@github.com:deathcap/voxel-harvest.git"
   },
   "dependencies": {
-    "itempile": "0.0.3"
+    "itempile": "~0.1.1"
   },
   "devDependencies": {
     "coffee-script": "1.6.3"
+  },
+  "peerDependencies": {
+    "voxel-engine": ">=0.19.0",
+    "voxel-plugins": ">=0.1.0",
+    "voxel-carry": ">=0.1.0",
+    "voxel-registry": ">=0.1.0",
+    "voxel-mine": ">=0.1.0",
+    "voxel-inventory-hotbar": ">=0.1.0"
   }
 }

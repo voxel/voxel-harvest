@@ -52,9 +52,6 @@
 
     Harvest.prototype.enable = function() {
       var _this = this;
-      this.playerInventory.give(new ItemPile('pickaxeWood', 1, {
-        damage: 5
-      }));
       return this.mine.on('break', this.onBreak = function(target) {
         var blockName, droppedPile, excess;
         game.setBlock(target.voxel, 0);
@@ -100,8 +97,7 @@
         tool = void 0;
       }
       this.hotbar.inventory.set(this.hotbar.inventoryWindow.selectedIndex, tool);
-      this.hotbar.refresh();
-      return console.log('tool = ', tool);
+      return this.hotbar.refresh();
     };
 
     Harvest.prototype.block2ItemPile = function(blockName) {

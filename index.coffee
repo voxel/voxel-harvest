@@ -1,4 +1,3 @@
-# vim: set shiftwidth=2 tabstop=2 softtabstop=2 expandtab:
 
 EventEmitter = (require 'events').EventEmitter
 ItemPile = require 'ItemPile'
@@ -19,8 +18,10 @@ class Harvest extends EventEmitter
     @enable()
   
   enable: () ->
-    @playerInventory.give new ItemPile('pickaxeWood', 1, {damage:5})
+    #@playerInventory.give new ItemPile('pickaxeWood', 5, {damage:5})
+    #@playerInventory.give new ItemPile('plankOak', 50)
     #@playerInventory.give new ItemPile('pickaxeStone', 1, {damage:0})
+    #@playerInventory.give new ItemPile('chest', 1)
 
     @mine.on 'break', @onBreak = (target) =>
       #if plugins.isEnabled('debris') # TODO: refactor into module itself (event listener)
@@ -66,7 +67,7 @@ class Harvest extends EventEmitter
 
     @hotbar.inventory.set @hotbar.inventoryWindow.selectedIndex, tool
     @hotbar.refresh()
-    console.log 'tool = ',tool
+    #console.log 'tool = ',tool
 
   block2ItemPile: (blockName) ->
     item = @registry.getItemProps(blockName)?.itemDrop
