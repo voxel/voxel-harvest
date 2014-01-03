@@ -10,6 +10,7 @@ module.exports.pluginInfo =
 
 class Harvest extends EventEmitter
   constructor: (@game, opts) ->
+    @enableToolDamage = opts.enableToolDamage ? true
 
     @mine = game.plugins?.get('voxel-mine') ? throw 'voxel-harvest requires "voxel-mine" plugin'
     @registry = game.plugins?.get('voxel-registry') ? throw 'voxel-harvest requires "voxel-registry" plugin'
@@ -51,6 +52,7 @@ class Harvest extends EventEmitter
 
   damageToolHeld: (n=1) ->
     return if not @hotbar?    # no hotbar, no support
+    return if not @enableToolDamage
 
     tool = @hotbar.held()
     return if not tool?       # no tool held

@@ -20,33 +20,34 @@
     __extends(Harvest, _super);
 
     function Harvest(game, opts) {
-      var _ref, _ref1, _ref2, _ref3;
+      var _ref, _ref1, _ref2, _ref3, _ref4;
       this.game = game;
+      this.enableToolDamage = (_ref = opts.enableToolDamage) != null ? _ref : true;
       this.mine = (function() {
-        var _ref1;
-        if ((_ref = (_ref1 = game.plugins) != null ? _ref1.get('voxel-mine') : void 0) != null) {
-          return _ref;
+        var _ref2;
+        if ((_ref1 = (_ref2 = game.plugins) != null ? _ref2.get('voxel-mine') : void 0) != null) {
+          return _ref1;
         } else {
           throw 'voxel-harvest requires "voxel-mine" plugin';
         }
       })();
       this.registry = (function() {
-        var _ref2;
-        if ((_ref1 = (_ref2 = game.plugins) != null ? _ref2.get('voxel-registry') : void 0) != null) {
-          return _ref1;
+        var _ref3;
+        if ((_ref2 = (_ref3 = game.plugins) != null ? _ref3.get('voxel-registry') : void 0) != null) {
+          return _ref2;
         } else {
           throw 'voxel-harvest requires "voxel-registry" plugin';
         }
       })();
       this.playerInventory = (function() {
-        var _ref3, _ref4, _ref5;
-        if ((_ref2 = (_ref3 = (_ref4 = game.plugins) != null ? (_ref5 = _ref4.get('voxel-carry')) != null ? _ref5.inventory : void 0 : void 0) != null ? _ref3 : opts.playerInventory) != null) {
-          return _ref2;
+        var _ref4, _ref5, _ref6;
+        if ((_ref3 = (_ref4 = (_ref5 = game.plugins) != null ? (_ref6 = _ref5.get('voxel-carry')) != null ? _ref6.inventory : void 0 : void 0) != null ? _ref4 : opts.playerInventory) != null) {
+          return _ref3;
         } else {
           throw 'voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance';
         }
       })();
-      this.hotbar = (_ref3 = game.plugins) != null ? _ref3.get('voxel-inventory-hotbar') : void 0;
+      this.hotbar = (_ref4 = game.plugins) != null ? _ref4.get('voxel-inventory-hotbar') : void 0;
       this.enable();
     }
 
@@ -78,6 +79,9 @@
         n = 1;
       }
       if (this.hotbar == null) {
+        return;
+      }
+      if (!this.enableToolDamage) {
         return;
       }
       tool = this.hotbar.held();
