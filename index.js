@@ -6,7 +6,7 @@
 
   EventEmitter = (require('events')).EventEmitter;
 
-  ItemPile = require('ItemPile');
+  ItemPile = require('itempile');
 
   module.exports = function(game, opts) {
     return new Harvest(game, opts);
