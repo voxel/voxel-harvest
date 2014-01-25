@@ -1,6 +1,5 @@
-
 EventEmitter = (require 'events').EventEmitter
-ItemPile = require 'ItemPile'
+ItemPile = require 'itempile'
 
 module.exports = (game, opts) ->
   return new Harvest(game, opts)
