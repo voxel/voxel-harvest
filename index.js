@@ -28,7 +28,7 @@
         if ((_ref1 = (_ref2 = game.plugins) != null ? _ref2.get('voxel-mine') : void 0) != null) {
           return _ref1;
         } else {
-          throw 'voxel-harvest requires "voxel-mine" plugin';
+          throw new Error('voxel-harvest requires "voxel-mine" plugin');
         }
       })();
       this.registry = (function() {
@@ -36,7 +36,7 @@
         if ((_ref2 = (_ref3 = game.plugins) != null ? _ref3.get('voxel-registry') : void 0) != null) {
           return _ref2;
         } else {
-          throw 'voxel-harvest requires "voxel-registry" plugin';
+          throw new Error('voxel-harvest requires "voxel-registry" plugin');
         }
       })();
       this.playerInventory = (function() {
@@ -44,7 +44,7 @@
         if ((_ref3 = (_ref4 = (_ref5 = game.plugins) != null ? (_ref6 = _ref5.get('voxel-carry')) != null ? _ref6.inventory : void 0 : void 0) != null ? _ref4 : opts.playerInventory) != null) {
           return _ref3;
         } else {
-          throw 'voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance';
+          throw new Error('voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance');
         }
       })();
       this.hotbar = (_ref4 = game.plugins) != null ? _ref4.get('voxel-inventory-hotbar') : void 0;

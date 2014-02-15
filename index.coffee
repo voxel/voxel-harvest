@@ -11,9 +11,9 @@ class Harvest extends EventEmitter
   constructor: (@game, opts) ->
     @enableToolDamage = opts.enableToolDamage ? true
 
-    @mine = game.plugins?.get('voxel-mine') ? throw 'voxel-harvest requires "voxel-mine" plugin'
-    @registry = game.plugins?.get('voxel-registry') ? throw 'voxel-harvest requires "voxel-registry" plugin'
-    @playerInventory = game.plugins?.get('voxel-carry')?.inventory ? opts.playerInventory ? throw 'voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance'
+    @mine = game.plugins?.get('voxel-mine') ? throw new Error('voxel-harvest requires "voxel-mine" plugin')
+    @registry = game.plugins?.get('voxel-registry') ? throw new Error('voxel-harvest requires "voxel-registry" plugin')
+    @playerInventory = game.plugins?.get('voxel-carry')?.inventory ? opts.playerInventory ? throw new Error('voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance')
     @hotbar = game.plugins?.get('voxel-inventory-hotbar')
     @enable()
   
