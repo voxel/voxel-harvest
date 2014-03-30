@@ -75,7 +75,7 @@
     };
 
     Harvest.prototype.damageToolHeld = function(n) {
-      var maxDamage, props, tool, _base;
+      var maxDamage, tool, _base;
       if (n == null) {
         n = 1;
       }
@@ -89,8 +89,7 @@
       if (tool == null) {
         return;
       }
-      props = this.registry.getItemProps(tool.item);
-      maxDamage = props.maxDamage;
+      maxDamage = this.registry.getProp(tool.item, 'maxDamage');
       if (maxDamage == null) {
         return;
       }
@@ -106,8 +105,8 @@
     };
 
     Harvest.prototype.block2ItemPile = function(blockName) {
-      var item, itemPile, _ref;
-      item = (_ref = this.registry.getItemProps(blockName)) != null ? _ref.itemDrop : void 0;
+      var item, itemPile;
+      item = this.registry.getProp(blockName, 'itemDrop');
       if (item === null) {
         return void 0;
       }

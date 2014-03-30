@@ -56,8 +56,7 @@ class Harvest extends EventEmitter
     tool = @hotbar.held()
     return if not tool?       # no tool held
 
-    props = @registry.getItemProps(tool.item)
-    maxDamage = props.maxDamage
+    maxDamage = @registry.getProp tool.item, 'maxDamage'
     return if not maxDamage?  # not an item with finite durability
 
     tool.tags.damage ?= 0
@@ -71,7 +70,7 @@ class Harvest extends EventEmitter
     #console.log 'tool = ',tool
 
   block2ItemPile: (blockName) ->
-    item = @registry.getItemProps(blockName)?.itemDrop
+    item = @registry.getProp blockName, 'itemDrop'
     if item == null
       # special case, null = no drops
       return undefined
