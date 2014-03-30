@@ -16,7 +16,7 @@ class Harvest extends EventEmitter
     @playerInventory = game.plugins?.get('voxel-carry')?.inventory ? opts.playerInventory ? throw new Error('voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance')
     @hotbar = game.plugins?.get('voxel-inventory-hotbar')
     @enable()
-  
+
   enable: () ->
     #@playerInventory.give new ItemPile('pickaxeWood', 5, {damage:5})
     #@playerInventory.give new ItemPile('plankOak', 50)
@@ -60,7 +60,7 @@ class Harvest extends EventEmitter
     maxDamage = props.maxDamage
     return if not maxDamage?  # not an item with finite durability
 
-    tool.tags.damage ?= 0 
+    tool.tags.damage ?= 0
     tool.tags.damage += 1
     if tool.tags.damage >= maxDamage
       # break tool # TODO: fanfare
@@ -72,7 +72,7 @@ class Harvest extends EventEmitter
 
   block2ItemPile: (blockName) ->
     item = @registry.getItemProps(blockName)?.itemDrop
-    if item == null  
+    if item == null
       # special case, null = no drops
       return undefined
     if item == undefined
