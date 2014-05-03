@@ -54,11 +54,11 @@
     Harvest.prototype.enable = function() {
       return this.mine.on('break', this.onBreak = (function(_this) {
         return function(target) {
-          var blockName, droppedPile, excess;
+          var blockName, droppedPile, excess, _ref;
           game.setBlock(target.voxel, 0);
           _this.damageToolHeld(1);
           blockName = _this.registry.getBlockName(target.value);
-          droppedPile = _this.block2ItemPile(blockName);
+          droppedPile = _this.block2ItemPile(blockName, (_ref = _this.hotbar) != null ? _ref.held() : void 0);
           if (droppedPile == null) {
             return;
           }
@@ -104,14 +104,19 @@
       return this.hotbar.refresh();
     };
 
-    Harvest.prototype.block2ItemPile = function(blockName) {
-      var item, itemPile;
+    Harvest.prototype.block2ItemPile = function(blockName, heldTool) {
+      var heldToolClass, item, itemPile, requiredToolClass;
       item = this.registry.getProp(blockName, 'itemDrop');
       if (item === null) {
         return void 0;
       }
       if (item === void 0) {
         item = blockName;
+      }
+      heldToolClass = this.registry.getProp(heldTool != null ? heldTool.item : void 0, 'toolClass');
+      requiredToolClass = this.registry.getProp(blockName, 'requiredTool');
+      if (requiredToolClass !== void 0 && heldToolClass !== requiredToolClass) {
+        return void 0;
       }
       itemPile = new ItemPile(item, 1);
       return itemPile;

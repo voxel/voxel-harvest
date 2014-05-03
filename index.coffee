@@ -34,7 +34,7 @@ class Harvest extends EventEmitter
       # TODO: send 'harvest' event, allow canceling
 
       blockName = @registry.getBlockName(target.value)
-      droppedPile = @block2ItemPile(blockName)
+      droppedPile = @block2ItemPile(blockName, @hotbar?.held())
       return if not droppedPile?
 
       # adds to inventory and refreshes toolbar
@@ -69,7 +69,7 @@ class Harvest extends EventEmitter
     @hotbar.refresh()
     #console.log 'tool = ',tool
 
-  block2ItemPile: (blockName) ->
+  block2ItemPile: (blockName, heldTool) ->
     item = @registry.getProp blockName, 'itemDrop'
     if item == null
       # special case, null = no drops
@@ -77,6 +77,12 @@ class Harvest extends EventEmitter
     if item == undefined
       # unspecified, block drops itself
       item = blockName
+
+    heldToolClass = @registry.getProp(heldTool?.item, 'toolClass')
+    requiredToolClass = @registry.getProp(blockName, 'requiredTool')
+    if requiredToolClass != undefined and heldToolClass != requiredToolClass # TODO: array
+      # requires a specific tool, and wrong tool was used
+      return undefined
 
     # TODO: option to drop >1 count of item
     # TODO: option to drop probabilistically, count range min-max, with given chances
