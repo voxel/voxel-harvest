@@ -32,7 +32,13 @@ class Harvest extends EventEmitter
 
       @damageToolHeld(1)
 
-      # TODO: send 'harvest' event, allow canceling
+      # send 'harvest' event, allow preventing (similar to DOM events)
+      event =
+        target: target
+        defaultPrevented: false
+        preventDefault: () -> @defaultPrevented = true
+      @emit 'harvesting', event
+      return if event.defaultPrevented
 
       blockName = @registry.getBlockName(target.value)
       droppedPile = @block2ItemPile(blockName, @hotbar?.held())
@@ -47,6 +53,11 @@ class Harvest extends EventEmitter
         @game.setBlock target.voxel, target.value
         # TODO: sfx
         @console.log('You try to mine this block, but are unable to carry it with you (player inventory full)') if @console?
+        return
+
+      event =
+        target: target
+      @emit 'harvested', event
 
 
   disable: () ->
