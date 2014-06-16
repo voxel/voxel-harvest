@@ -5,7 +5,7 @@ module.exports = (game, opts) ->
   return new Harvest(game, opts)
 
 module.exports.pluginInfo =
-  loadAfter: ['voxel-mine', 'voxel-registry', 'voxel-carry', 'voxel-inventory-hotbar']
+  loadAfter: ['voxel-mine', 'voxel-registry', 'voxel-carry', 'voxel-inventory-hotbar', 'voxel-console']
 
 class Harvest extends EventEmitter
   constructor: (@game, opts) ->
@@ -14,7 +14,8 @@ class Harvest extends EventEmitter
     @mine = game.plugins?.get('voxel-mine') ? throw new Error('voxel-harvest requires "voxel-mine" plugin')
     @registry = game.plugins?.get('voxel-registry') ? throw new Error('voxel-harvest requires "voxel-registry" plugin')
     @playerInventory = game.plugins?.get('voxel-carry')?.inventory ? opts.playerInventory ? throw new Error('voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance')
-    @hotbar = game.plugins?.get('voxel-inventory-hotbar')
+    @hotbar = game.plugins?.get('voxel-inventory-hotbar') # optional
+    @console = game.plugins?.get('voxel-console') # optional
     @enable()
 
   enable: () ->
@@ -44,7 +45,9 @@ class Harvest extends EventEmitter
         # if didn't fit in inventory, un-mine the block since they can't carry it
         # TODO: handle partial fits, prevent dupes (canFit before giving?) -- needed once have custom drops
         @game.setBlock target.voxel, target.value
-        # TOOD: some kind of notification
+        # TODO: sfx
+        @console.log('You try to mine this block, but are unable to carry it with you (player inventory full)') if @console?
+
 
   disable: () ->
     @mine.removeListener 'break', @onBreak
