@@ -14,7 +14,8 @@
     "mining"
   ],
   "dependencies": {
-    "itempile": "^0.2.1"
+    "coffeeify": "^1.0.0",
+    "itempile": "^1.0.1"
   },
   "browserify": {
     "transform": [
