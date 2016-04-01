@@ -1,7 +1,7 @@
 {
   "name": "voxel-harvest",
   "description": "add mined blocks from voxel-mine to an inventory (voxel.js plugin)",
-  "version": "0.4.1",
+  "version": "1.0.0",
   "main": "harvest.js",
   "repository": {
     "type": "git",
