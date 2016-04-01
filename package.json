@@ -14,13 +14,7 @@
     "mining"
   ],
   "dependencies": {
-    "coffeeify": "^1.0.0",
-    "itempile": "^1.0.1"
-  },
-  "browserify": {
-    "transform": [
-      "coffeeify"
-    ]
+    "itempile": "^2.0.0"
   },
   "license": "MIT"
 }
