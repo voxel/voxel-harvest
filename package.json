@@ -2,7 +2,7 @@
   "name": "voxel-harvest",
   "description": "add mined blocks from voxel-mine to an inventory (voxel.js plugin)",
   "version": "0.4.1",
-  "main": "harvest.coffee",
+  "main": "harvest.js",
   "repository": {
     "type": "git",
     "url": "git@github.com:deathcap/voxel-harvest.git"
@@ -14,13 +14,7 @@
     "mining"
   ],
   "dependencies": {
-    "coffeeify": "^1.0.0",
-    "itempile": "^1.0.1"
-  },
-  "browserify": {
-    "transform": [
-      "coffeeify"
-    ]
+    "itempile": "^2.0.0"
   },
   "license": "MIT"
 }
